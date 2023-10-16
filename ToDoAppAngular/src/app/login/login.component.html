@@ -1,0 +1,18 @@
+<form class="col-sm-12 col-md-6  mx-auto" [formGroup]="loginForm" (submit)="loginUser()">
+    <div class="mb-3">
+      <label for="userName" class="form-label">User Name</label>
+      <input type="text" class="form-control lh-5" id="id" formControlName="username">
+    </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input type="text" class="form-control" id="password" formControlName="password" placeholder="Enter Pawword">
+    </div>
+    
+    <div class="mb-3">
+      <button type="submit" class="form-control" [disabled]="!loginForm.valid" id="submit" class="btn btn-success">Login</button>
+    </div>
+  </form>
+  <div class="text text-danger" *ngIf="errorMessage">
+    {{errorMessage}}
+  </div>
+  

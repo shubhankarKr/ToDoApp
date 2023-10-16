@@ -1,0 +1,9 @@
+/* You can add global styles to this file, and also import other style files */
+
+body{
+    background: rgb(96,92,162);
+    background: -moz-linear-gradient(90deg, rgba(96,92,162,1) 0%, rgba(54,191,123,1) 35%, rgba(0,212,255,1) 100%);
+    background: -webkit-linear-gradient(90deg, rgba(96,92,162,1) 0%, rgba(54,191,123,1) 35%, rgba(0,212,255,1) 100%);
+    background: linear-gradient(90deg, rgba(96,92,162,1) 0%, rgba(54,191,123,1) 35%, rgba(0,212,255,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#605ca2",endColorstr="#00d4ff",GradientType=1);
+}

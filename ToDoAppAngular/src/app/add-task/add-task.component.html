@@ -1,0 +1,37 @@
+<form class="col-sm-12 col-md-6  mx-auto" [formGroup]="addTaskForm">
+  <div class="mb-3" *ngIf="mode == 'view' ">
+    <label for="id" class="form-label">Task Id</label>
+    <input type="text" class="form-control lh-5" id="id" formControlName="id">
+  </div>
+  <div class="mb-3">
+    <label for="title" class="form-label">Title</label>
+    <input type="text" class="form-control" id="title" formControlName="title" placeholder="Enter Title">
+    <div class="text-danger" *ngIf="addTaskForm.controls['title'].touched && !addTaskForm.controls['title'].valid">
+      Please enter the title
+    </div>
+  </div>
+  <div class="mb-3">
+    <label for="description" class="form-label">Description</label>
+    <input type="text" class="form-control lh-5" id="description" formControlName="description" placeholder="Enter Description">
+  </div>
+  <div class="mb-3" *ngIf="mode != 'add'">
+    <label for="createdDate" class="form-label">Task Created</label>
+    <input type="datetime" class="form-control" id="createdDate" formControlName="createdDate">
+  </div>
+  <div class="mb-3" *ngIf="mode == 'edit' && !addTaskForm.controls['lastUpdatedDate'].value ">
+    <label for="description" class="form-label">Last Updated</label>
+    <input type="text" class="form-control" id="lastUpdatedDate" formControlName="lastUpdatedDate">
+  </div>
+  <div class="mb-3" *ngIf="mode == 'edit' && addTaskForm.controls['lastUpdatedDate'].value">
+    <label for="description" class="form-label">Last Updated</label>
+    <input type="datetime" class="form-control" id="lastUpdatedDate" formControlName="lastUpdatedDate">
+  </div>
+  <div class="mb-3" *ngIf="mode == 'view'">
+    <label for="colorCode" class="form-label">Color Code</label>
+    <input type="text" class="form-control" id="colorCode" formControlName="colorCode">
+  </div>       
+  <div class="mb-3">
+    <button type="submit" class="form-control" (click)="saveTask()" [disabled]="!addTaskForm.valid" *ngIf="mode == 'add' " id="submit" class="btn btn-success">Save</button>
+    <button type="submit" class="form-control" (click)="updateTask()" [disabled]="!addTaskForm.valid" *ngIf="mode == 'edit' " id="submit" class="btn btn-success">Update</button>
+  </div>
+</form>
