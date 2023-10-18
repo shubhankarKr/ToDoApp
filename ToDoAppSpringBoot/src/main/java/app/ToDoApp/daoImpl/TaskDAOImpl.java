@@ -30,8 +30,8 @@ public class TaskDAOImpl implements TaskDAO{
 	
 	@Override
 	public ToDoTaskDTO addTask(ToDoTaskDTO ToDoTaskDTO) {
-//		UserDetails currentUser=userService.getCurrentUser();
-//		ToDoTaskDTO.setUserName(currentUser.getUsername());
+		UserDetails currentUser=userService.getCurrentUser();
+		ToDoTaskDTO.setUserName(currentUser.getUsername());
 		ToDoTask toDo=ToDoTaskDTO.createEntity(ToDoTaskDTO);
 		Date date=new Date();
 		toDo.setCreatedDate(date);

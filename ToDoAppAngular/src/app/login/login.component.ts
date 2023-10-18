@@ -30,18 +30,14 @@ export class LoginComponent implements OnInit{
     this.currentUser.password=this.loginForm.get('password')?.value;
    this.service.userLogin(this.currentUser).subscribe({
     next : responseData=>{
-     // window.sessionStorage.setItem("Authorization",responseData.headers.get('Authorization')!);
-      // this.model = <any> responseData.body;
+      this.currentUser=responseData
       console.log(' current User '+this.currentUser);
-
       let xsrf=getCookie('XSRF-TOKEN')
-      
-      window.sessionStorage.setItem('token',JSON.stringify(xsrf));
-      // this.model.authStatus = 'AUTH';
-      // window.sessionStorage.setItem("userdetails",JSON.stringify(this.model));
-      // let xsrf = getCookie('XSRF-TOKEN')!;
-      // window.sessionStorage.setItem("XSRF-TOKEN",xsrf);
-      // this.router.navigate(['dashboard']);
+      window.sessionStorage.setItem('userdetails',JSON.stringify(this.currentUser));
+      window.sessionStorage.setItem('XSRF-TOKEN',JSON.stringify(xsrf));
+      console.log('userDetails loginUser '+sessionStorage.getItem('userdetails'))
+      console.log('userDetails loginUser parse '+JSON.parse(sessionStorage.getItem('userdetails')!))
+      console.log('userDetails loginUser XSRF-TOKEN '+sessionStorage.getItem('XSRF-TOKEN'))
       this.router.navigate(['/']);
     },
     error : err =>{

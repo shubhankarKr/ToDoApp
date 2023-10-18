@@ -108,6 +108,7 @@ public class ToDoTask {
 		toDoDto.setLastUpdatedDate(toDo.getLastUpdatedDate());
 		toDoDto.setTitle(toDo.getTitle());
 		toDoDto.setId(toDo.getId());
+		toDoDto.setUserName(toDo.getUserName());
 		ColorCode color=toDo.getColor();
 		if(color!=null) {
 			ColorCodeDTO colorDto=new ColorCodeDTO();

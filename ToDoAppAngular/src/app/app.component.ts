@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
+
   title = 'ToDoList';
   constructor(private router:Router){}
 
@@ -18,4 +19,10 @@ export class AppComponent {
     this.router.navigate(['/home'])
   }
   }
+    logout() {
+      console.log(' logout ');
+      
+     window.sessionStorage.setItem("userdetails",'')
+     window.sessionStorage.setItem("XSRF-TOKEN",'')
+    }
 }
