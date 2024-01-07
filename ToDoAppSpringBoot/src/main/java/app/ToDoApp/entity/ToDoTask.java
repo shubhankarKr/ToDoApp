@@ -2,9 +2,7 @@ package app.ToDoApp.entity;
 
 import java.util.Date;
 
-import app.ToDoApp.modelDTO.ColorCodeDTO;
 import app.ToDoApp.modelDTO.ToDoTaskDTO;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -37,10 +35,6 @@ public class ToDoTask {
 	private String desciption;
 	
 	private String title;
-	
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "color_id")
-	private ColorCode color;
 	
 	@Column(name = "user_name")
 	private String userName;
@@ -85,14 +79,6 @@ public class ToDoTask {
 		this.title = title;
 	}
 	
-	public ColorCode getColor() {
-		return color;
-	}
-
-	public void setColor(ColorCode color) {
-		this.color = color;
-	}
-	
 	public String getUserName() {
 		return userName;
 	}
@@ -109,13 +95,6 @@ public class ToDoTask {
 		toDoDto.setTitle(toDo.getTitle());
 		toDoDto.setId(toDo.getId());
 		toDoDto.setUserName(toDo.getUserName());
-		ColorCode color=toDo.getColor();
-		if(color!=null) {
-			ColorCodeDTO colorDto=new ColorCodeDTO();
-			colorDto.setColorCode(color.getColorCode());
-			colorDto.setColorId(color.getColorId());
-			toDoDto.setColour(colorDto);
-		}
 		return toDoDto;
 	}
 }

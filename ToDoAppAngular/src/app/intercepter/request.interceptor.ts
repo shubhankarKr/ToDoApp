@@ -22,15 +22,14 @@ export class RequestInterceptor implements HttpInterceptor {
     this.user=req.body
     
     let httpHeaders = req.headers
-    console.log('Authorization interceptor '+httpHeaders.get('Authorization'));
-   
-    
+    //console.log('Authorization interceptor '+httpHeaders.get('Authorization'));
     // httpHeaders = httpHeaders.append('Authorization', 'Basic ' + window.btoa('Clerk' + ':' + 'a'));
     let xsrf = sessionStorage.getItem('XSRF-TOKEN');
-    if(xsrf){
-      httpHeaders = httpHeaders.append('X-XSRF-TOKEN', xsrf);  
+    // console.log('xsrf value '+xsrf);
+    
+    if(xsrf !== null && xsrf !== "undefined"  && xsrf !== ''){
+      httpHeaders = httpHeaders.append('X-XSRF-TOKEN', JSON.parse(xsrf));  
     }
-    console.log('Authorization X-XSRF-TOKEN '+httpHeaders.get('X-XSRF-TOKEN'));
     httpHeaders = httpHeaders.append('X-Requested-With', 'XMLHttpRequest');
     const xhr = req.clone({
       headers: httpHeaders

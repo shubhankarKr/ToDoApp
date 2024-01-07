@@ -9,6 +9,7 @@ import { AddTaskComponent } from './add-task/add-task.component';
 import { TasKListComponent } from './task-list/task-list.component';
 import { LoginComponent } from './login/login.component';
 import { RequestInterceptor } from './intercepter/request.interceptor';
+import { SighUpComponent } from './sigh-up/sigh-up.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { RequestInterceptor } from './intercepter/request.interceptor';
     AddTaskComponent,
     TasKListComponent,
     LoginComponent,
+    SighUpComponent,
   ],
   imports: [
     BrowserModule,

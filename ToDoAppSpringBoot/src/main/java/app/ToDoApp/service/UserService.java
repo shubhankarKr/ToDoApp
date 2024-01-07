@@ -22,11 +22,12 @@ public class UserService implements UserDetailsService {
 		@Autowired
 		TaskUserDAO taskUserDAO;
 	
-	    public UserDetails getCurrentUser() {
+	    public String getCurrentUser() {
 	        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	        Object bo=authentication.getDetails();
 	        Object principal = authentication.getPrincipal();
-	        if (principal instanceof UserDetails) {
-	            return (UserDetails) principal;
+	        if (principal instanceof String) {
+	            return (String)principal;
 	        } else {
 	            return null;
 	        }

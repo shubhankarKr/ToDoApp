@@ -1,69 +1,69 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ToDoService } from '../service/to-do.service';
 import { toDoTaskModel } from '../model/ToDoTaskModel';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { UserService } from '../service/user.service';
 
 @Component({
   selector: 'app-tash-list',
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.css']
 })
-export class TasKListComponent implements OnInit{
-  
-   constructor(private service:ToDoService, private activatedRoute:ActivatedRoute){}
+export class TasKListComponent implements OnInit {
+  loggedIn!:boolean;
+
+  constructor(private service: ToDoService, private activatedRoute: ActivatedRoute, private router: Router, private userService: UserService) { }
 
   ngOnInit(): void {
-      this.getColorData();
-      this.activatedRoute.queryParams.subscribe({
-        next:res=>{
-          if(res['searchBy']){
-            this.filterTaskList(res['searchBy'])
-          }else{
-            this.getTaskList();
-          }
+    this.userService.getloggedInUser().subscribe({
+      next: res => {
+        this.loggedIn=res
+        if (res == false) {
+          this.router.navigate(['/login'])
+        } else {
+          this.activatedRoute.queryParams.subscribe({
+            next: res => {
+              if (res['searchBy']) {
+                this.filterTaskList(res['searchBy'])
+              } else {
+                this.getTaskList();
+              }
+            }
+          })
+          this.router.navigate(['/home'])
         }
-      })
-  }
-
-  taskList:toDoTaskModel[]=[]
-  colorData!:any[]
-  getTaskList(){
-    this.service.getAllTask().subscribe({
-      next : res=>{
-        this.taskList=res;       
-      }
-    });
-  }
-  updateColor(taskId:number,colorId:number){
-    this.service.updateColor({'taskId':taskId,'colorId':colorId}).subscribe({
-      next :res=>{
-        this.getTaskList()
-      }
+      },
+      error:err=>console.log(' errro in taskList component '+JSON.stringify(err))
+      
     })
 
   }
-  deleteTask(id:number){
-    this.taskList=[];
+
+  taskList: toDoTaskModel[] = []
+
+  getTaskList() {
+    this.service.getAllTask().subscribe({
+      next: res => {
+        this.taskList = res;
+      }
+    });
+  }
+
+  deleteTask(id: number) {
+    this.taskList = [];
     this.service.deleteTask(id).subscribe({
-      next : res=> {
+      next: res => {
         this.getTaskList()
       }
     });
   }
 
-  filterTaskList(data:string){
+  filterTaskList(data: string) {
     this.service.searchTask(data).subscribe({
-      next : res=>{
-        this.taskList=res; 
+      next: res => {
+        this.taskList = res;
       }
     });
-  }
-
-  getColorData(){
-    // this.service.getColorData().subscribe({
-    //   next: res=>{
-    //     this.colorData=res
-    //   }
-    // })
   }
 }

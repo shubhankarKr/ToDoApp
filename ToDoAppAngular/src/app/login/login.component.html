@@ -12,7 +12,11 @@
       <button type="submit" class="form-control" [disabled]="!loginForm.valid" id="submit" class="btn btn-success">Login</button>
     </div>
   </form>
-  <div class="text text-danger" *ngIf="errorMessage">
-    {{errorMessage}}
+  <div class="col-sm-12 col-md-6  mx-auto fw-bolder" style="color: rgb(255, 0, 0);background-color: azure;">
+    <!-- <div>Please login to continue</div> -->
+    <div *ngIf="message">
+      {{message}}
+    </div>
   </div>
+ 
   

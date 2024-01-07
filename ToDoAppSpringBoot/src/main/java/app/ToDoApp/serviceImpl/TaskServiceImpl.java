@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import app.ToDoApp.dao.TaskDAO;
-import app.ToDoApp.modelDTO.ColorCodeDTO;
-import app.ToDoApp.modelDTO.ColorUpdateModel;
 import app.ToDoApp.modelDTO.ToDoTaskDTO;
 import app.ToDoApp.service.TaskService;
 import jakarta.transaction.Transactional;
@@ -53,17 +51,5 @@ public class TaskServiceImpl implements TaskService{
 	public ToDoTaskDTO getUserById(int id) {
 		// TODO Auto-generated method stub
 		return dao.getUserById(id);
-	}
-
-	@Override
-	public List<ColorCodeDTO> getColors() {
-		// TODO Auto-generated method stub
-		return dao.getColors();
-	}
-
-	@Override
-	public Boolean updateColor(ColorUpdateModel colorUpdateModel) {
-		// TODO Auto-generated method stub
-		return dao.updateColor(colorUpdateModel);
 	}
 }

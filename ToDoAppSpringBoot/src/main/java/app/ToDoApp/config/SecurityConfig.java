@@ -1,15 +1,13 @@
 package app.ToDoApp.config;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserCache;
-import org.springframework.security.core.userdetails.cache.NullUserCache;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -23,6 +21,7 @@ import app.ToDoApp.filter.CsrfCookieFilter;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
 	
 	@Bean
@@ -49,20 +48,21 @@ public class SecurityConfig {
                         config.setMaxAge(3600L);
                         return config;
                     }
-                })).csrf((csrf) -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers("/register")
+                })).csrf((csrf) -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers("/user/register")
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                         .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
                 .authorizeHttpRequests((requests)->requests
+                		.requestMatchers("/user/register").permitAll()
                         .requestMatchers("/**").authenticated())
                 .formLogin(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults());
         return http.build();
     }
 	
-	@Bean
-	UserCache userCache() {
-	    return new NullUserCache();
-	}
+//	@Bean
+//	UserCache userCache() {
+//	    return new NullUserCache();
+//	}
 	
 //	@Bean
 //	InMemoryUserDetailsManager inMemoryUserDetailsManager(PasswordEncoder encoder) {

@@ -3,7 +3,6 @@ package app.ToDoApp.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import app.ToDoApp.modelDTO.ColorCodeDTO;
-import app.ToDoApp.modelDTO.ColorUpdateModel;
 import app.ToDoApp.modelDTO.ToDoTaskDTO;
 import app.ToDoApp.service.TaskService;
 
@@ -55,14 +52,4 @@ public class TaskController {
 		return service.getUserById(id);
 	}
 	
-	@GetMapping("/getColorMD")
-	public List<ColorCodeDTO> getColors() {
-		return service.getColors();
-	}
-	
-	@PutMapping("/updateColor")
-	public Boolean updateColor(@RequestBody ColorUpdateModel colorUpdateModel) {
-
-		return service.updateColor(colorUpdateModel);
-	}
 }

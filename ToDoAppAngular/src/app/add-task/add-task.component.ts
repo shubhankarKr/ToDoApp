@@ -30,7 +30,7 @@ export class AddTaskComponent {
     }else{
       this.mode='add'
     }
-    console.log('mode value '+this.mode);
+    // console.log('mode value '+this.mode);
 
      this.addTaskForm=this.fb.group({
       title : [{value :'',disabled : this.mode =='view'},Validators.required],

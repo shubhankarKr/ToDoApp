@@ -5,14 +5,10 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
 import app.ToDoApp.dao.TaskDAO;
-import app.ToDoApp.entity.ColorCode;
 import app.ToDoApp.entity.ToDoTask;
-import app.ToDoApp.modelDTO.ColorCodeDTO;
-import app.ToDoApp.modelDTO.ColorUpdateModel;
 import app.ToDoApp.modelDTO.ToDoTaskDTO;
 import app.ToDoApp.service.UserService;
 import jakarta.persistence.EntityManager;
@@ -30,13 +26,10 @@ public class TaskDAOImpl implements TaskDAO{
 	
 	@Override
 	public ToDoTaskDTO addTask(ToDoTaskDTO ToDoTaskDTO) {
-		UserDetails currentUser=userService.getCurrentUser();
-		ToDoTaskDTO.setUserName(currentUser.getUsername());
+		ToDoTaskDTO.setUserName(userService.getCurrentUser());
 		ToDoTask toDo=ToDoTaskDTO.createEntity(ToDoTaskDTO);
 		Date date=new Date();
 		toDo.setCreatedDate(date);
-		ColorCode color= entityManager.find(ColorCode.class, 1);
-		toDo.setColor(color);
 		entityManager.persist(toDo);
 		ToDoTaskDTO dto=toDo.createDTO(toDo);
 		return dto;
@@ -44,7 +37,8 @@ public class TaskDAOImpl implements TaskDAO{
 
 	@Override  
 	public List<ToDoTaskDTO> getTasks() {
-		Query q=entityManager.createQuery("select t from ToDoTask t order by t.id desc");
+		Query q=entityManager.createQuery("select t from ToDoTask t where t.userName = :userName order by t.id desc");
+		q.setParameter("userName", userService.getCurrentUser());
 		List<ToDoTask> toDoList=q.getResultList();
 		List<ToDoTaskDTO> list=new ArrayList<>();
 		for (ToDoTask toDo : toDoList) {
@@ -69,7 +63,6 @@ public class TaskDAOImpl implements TaskDAO{
 		// TODO Auto-generated method stub
 		ToDoTask do1=entityManager.find(ToDoTask.class, id);
 		if(do1 != null) {
-			do1.setColor(null);
 			entityManager.remove(do1);
 		}
 		return true;
@@ -103,29 +96,4 @@ public class TaskDAOImpl implements TaskDAO{
 		}
 	}
 
-	@Override
-	public List<ColorCodeDTO> getColors() {
-		List<ColorCodeDTO> res=new ArrayList<>();
-		List<ColorCode> entities= entityManager.createQuery("select c from ColorCode c").getResultList();
-		entities.forEach(entity->{
-			ColorCodeDTO dto=new ColorCodeDTO();
-					dto.setColorCode(entity.getColorCode());
-					dto.setColorId(entity.getColorId());
-					res.add(dto);
-		});
-		return res;
-	}
-
-	@Override
-	public Boolean updateColor(ColorUpdateModel colorUpdateModel) {
-		ColorCode colorEntity = entityManager.find(ColorCode.class, colorUpdateModel.getColorId());
-		if (colorEntity != null) {
-			ToDoTask toDoEntity = entityManager.find(ToDoTask.class, colorUpdateModel.getTaskId());
-			if (toDoEntity != null) {
-				toDoEntity.setColor(colorEntity);
-			}
-			return true;
-		}
-		return false;
-	}
 }

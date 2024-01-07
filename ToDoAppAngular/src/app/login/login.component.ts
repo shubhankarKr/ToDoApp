@@ -4,6 +4,7 @@ import { ToDoService } from '../service/to-do.service';
 import { User } from '../model/User';
 import { getCookie, setCookie } from 'typescript-cookie'
 import { Router } from '@angular/router';
+import { UserService } from '../service/user.service';
 
 
 @Component({
@@ -13,8 +14,9 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit{
   loginForm!:FormGroup
-  errorMessage!:string
-  constructor(private fb:FormBuilder,private service:ToDoService,private router:Router){}
+  message='Please login to continue'
+  constructor(private fb:FormBuilder,private service:ToDoService,private router:Router,
+    private userService:UserService){}
   currentUser=new User();
   ngOnInit(): void {
     this.loginForm=this.fb.group({
@@ -23,34 +25,22 @@ export class LoginComponent implements OnInit{
     });
   }
   loginUser(){
-    const formData = new FormData();
-    formData.append('username',this.loginForm.get('username')?.value);
-    formData.append('password',this.loginForm.get('password')?.value);
     this.currentUser.userName=this.loginForm.get('username')?.value;
     this.currentUser.password=this.loginForm.get('password')?.value;
+    this.userService.setloggedInUser(false);
    this.service.userLogin(this.currentUser).subscribe({
     next : responseData=>{
       this.currentUser=responseData
-      console.log(' current User '+this.currentUser);
       let xsrf=getCookie('XSRF-TOKEN')
-      window.sessionStorage.setItem('userdetails',JSON.stringify(this.currentUser));
       window.sessionStorage.setItem('XSRF-TOKEN',JSON.stringify(xsrf));
-      console.log('userDetails loginUser '+sessionStorage.getItem('userdetails'))
-      console.log('userDetails loginUser parse '+JSON.parse(sessionStorage.getItem('userdetails')!))
-      console.log('userDetails loginUser XSRF-TOKEN '+sessionStorage.getItem('XSRF-TOKEN'))
+      this.userService.setloggedInUser(true);
       this.router.navigate(['/']);
     },
     error : err =>{
-      console.log(err);
+      // console.log(err);
+      this.message=err+' Please check credentials';
     }
    })
    
   }
-
-    // this.service.userLogin(data).subscribe({
-    //   next :res=> {
-    //     this.response=res 
-    //     this.router.navigate(['/home'])
-    //   }
-    // });
 }

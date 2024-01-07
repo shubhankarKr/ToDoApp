@@ -1,0 +1,22 @@
+<form class="col-sm-12 col-md-6  mx-auto" [formGroup]="registerForm" (submit)="registerUser()">
+    <div class="mb-3">
+      <label for="userName" class="form-label">User Name</label>
+      <input type="text" class="form-control lh-5" id="id" formControlName="username">
+    </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input type="text" class="form-control" id="password" formControlName="password" placeholder="Enter Pawword">
+    </div>
+    
+    <div class="mb-3">
+      <button type="submit" class="form-control" [disabled]="!registerForm.valid" id="submit" class="btn btn-success">Sign Up</button>
+    </div>
+  </form>
+ <div class="col-sm-12 col-md-6  mx-auto fw-bolder" >
+    <div *ngIf="errorMessage" style="color: rgb(255, 0, 0);background-color: azure;">
+      {{errorMessage}}
+    </div>
+    <div *ngIf="successMessage" style="color: rgb(1, 6, 5);background-color: azure;">
+      {{successMessage}}
+    </div>
+  </div> 

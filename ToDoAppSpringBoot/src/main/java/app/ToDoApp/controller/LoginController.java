@@ -1,9 +1,11 @@
 package app.ToDoApp.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus; 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,21 +29,24 @@ public class LoginController {
 	PasswordEncoder encoder;
 	
 	@PostMapping("/register")
-	public ResponseEntity<String> registerUser(@RequestBody TaskUser taskUser) {
-		ResponseEntity<String> res=null;
+	public ResponseEntity<HashMap<String,String>> registerUser(@RequestBody TaskUser taskUser) {
+		HashMap<String, String> outputType= new HashMap<>();
+		ResponseEntity<HashMap<String, String>> res=null;
 		List<TaskUser> taskUserInDB=taskUserDAO.findByUserName(taskUser.getUserName());
 		if(taskUserInDB.size()>0) {
-			res=new ResponseEntity<String>(taskUser.getUserName()+" already exists",HttpStatus.NOT_ACCEPTABLE);
+			outputType.put("errorMessage", taskUser.getUserName()+" already exists");
+			res=new ResponseEntity<HashMap<String,String>>(outputType, HttpStatus.BAD_REQUEST);
 		}
 		else {
 			try {
 				taskUser.setPassword(encoder.encode(taskUser.getPassword()));
 				TaskUser taskUserAfterSave=taskUserDAO.save(taskUser);
+				outputType.put("successMessage", taskUserAfterSave.getUserName()+" created successfully");
 				if(taskUserAfterSave!=null) {
-					res=new ResponseEntity<String>("User created successfully",HttpStatus.CREATED);
+					res = new ResponseEntity<HashMap<String,String>>(outputType, HttpStatus.CREATED);
 				}
 			}catch(Exception e) {
-				res=new ResponseEntity<String>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+				res=new ResponseEntity<HashMap<String,String>>(outputType,HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 		}
 		return res;

@@ -17,7 +17,7 @@ export class ToDoService {
   }
 
   updateTask(task : any):Observable<toDoTaskModel>{
-    console.log('update service '+JSON.stringify(task));
+    // console.log('update service '+JSON.stringify(task));
     
     return this.http.put<toDoTaskModel>('http://localhost:8000/task/update',task,{withCredentials:true}).pipe(
       catchError(this.handleError)
@@ -26,7 +26,7 @@ export class ToDoService {
 
   deleteTask(id : number):Observable<boolean>{
     let url = `http://localhost:8000/task/delete/${id}`;
-    return this.http.delete<boolean>(url).pipe(
+    return this.http.delete<boolean>(url,{withCredentials:true}).pipe(
       catchError(this.handleError)
     );
   }
@@ -62,29 +62,32 @@ export class ToDoService {
   }
 
   registerUser(data:any):Observable<any>{
+    // console.log('data value ',data);
+    
     let url=`http://localhost:8000/user/register`;
+    let options={
+      //'observe':'body'
+    }
     return this.http.post<any>(url,data).pipe(
       catchError(this.handleError)
     )
   }
 
   userLogin(user:User){
-    console.log('user login called');
-    
     let url=`http://localhost:8000/user/login`;
     let httpHeaders = new HttpHeaders();
      httpHeaders = httpHeaders.append('Authorization', 'Basic ' + window.btoa(user.userName + ':' + user.password));
-    console.log('Authorization service '+httpHeaders.get('Authorization'));
+    // console.log('Authorization service '+httpHeaders.get('Authorization'));
     return this.http.get<User>(url,{headers:httpHeaders,withCredentials:true}).pipe(
       catchError(this.handleError)
     )
   }
 
   private handleError(err: HttpErrorResponse ): Observable<any> {
-    console.log(err);
-    if(err.message){
+    // console.log(err);
+    if(err.error){
       return throwError( () => {
-        return err.message;
+        return err.error.errorMessage;
        } );
     }else{
       return throwError( () => {

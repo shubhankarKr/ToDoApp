@@ -11,7 +11,6 @@ public class ToDoTaskDTO {
 	private String description;
 	private String title;
 	private String colourCode;
-	private ColorCodeDTO colour;
 	private String userName;
 
 	public int getId() {
@@ -52,14 +51,6 @@ public class ToDoTaskDTO {
 
 	public void setColourCode(String colourCode) {
 		this.colourCode = colourCode;
-	}
-	
-	public ColorCodeDTO getColour() {
-		return colour;
-	}
-
-	public void setColour(ColorCodeDTO colour) {
-		this.colour = colour;
 	}
 
 	public String getUserName() {
