@@ -26,7 +26,7 @@ export class SighUpComponent implements OnInit{
     let password=this.registerForm.get('password')?.value;
     // console.log(' component value '+{'username':username,'password':password});
     
-    this.service.registerUser({'userName':username,'password':password,'role':'USER'}).subscribe({
+    this.service.registerUser({'userName':username,'password':password,'email':'hett@gmail.com'}).subscribe({
       next:res=>{
         // console.log(' registerUser '+JSON.stringify(res));
         this.successMessage=res.successMessage;
